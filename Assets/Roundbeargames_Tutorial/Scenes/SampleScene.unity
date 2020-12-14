@@ -23,10 +23,10 @@ RenderSettings:
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
-  m_AmbientIntensity: 1
+  m_AmbientIntensity: 1.75
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: f3fcc732e2832884a84d72aa20dd0daf, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -206,13 +206,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 705507993}
-  m_LocalRotation: {x: 0.41957062, y: 0.1086454, z: -0.050662182, w: 0.8997722}
+  m_LocalRotation: {x: 0.038670294, y: -0.9025058, z: 0.42084536, w: 0.082928725}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 50, y: 13.77, z: 0}
+  m_LocalEulerAnglesHint: {x: 50, y: -169.5, z: 0}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -311,7 +311,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1684763827}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a20d2ea990e274e399b14e8a2288ccf8, type: 3}
+  m_Script: {fileID: 11500000, guid: cb007abb46d9a4720903b5a41d520416, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &4118283776319414223
@@ -321,6 +321,49 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1684763828, guid: 784a42533e0e746db83e198d7a45e154, type: 3}
+      propertyPath: speed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1684763828, guid: 784a42533e0e746db83e198d7a45e154, type: 3}
+      propertyPath: material
+      value: 
+      objectReference: {fileID: 2100000, guid: 4022d9aef62e74f979e276fe001e220a, type: 2}
+    - target: {fileID: 449262209356499511, guid: 784a42533e0e746db83e198d7a45e154,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: f85403621ac70418f9db14203b9fad9c, type: 2}
+    - target: {fileID: 449262209356499511, guid: 784a42533e0e746db83e198d7a45e154,
+        type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 449262209360622833, guid: 784a42533e0e746db83e198d7a45e154,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 4022d9aef62e74f979e276fe001e220a, type: 2}
+    - target: {fileID: 449262209360622835, guid: 784a42533e0e746db83e198d7a45e154,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 4022d9aef62e74f979e276fe001e220a, type: 2}
+    - target: {fileID: 449262209360622837, guid: 784a42533e0e746db83e198d7a45e154,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 4022d9aef62e74f979e276fe001e220a, type: 2}
+    - target: {fileID: 449262209360622839, guid: 784a42533e0e746db83e198d7a45e154,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 4022d9aef62e74f979e276fe001e220a, type: 2}
+    - target: {fileID: 449262209360622847, guid: 784a42533e0e746db83e198d7a45e154,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 4022d9aef62e74f979e276fe001e220a, type: 2}
     - target: {fileID: 4648094576819871367, guid: 784a42533e0e746db83e198d7a45e154,
         type: 3}
       propertyPath: m_RootOrder
@@ -381,7 +424,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: SuitedMan
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1684763829, guid: 784a42533e0e746db83e198d7a45e154, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 784a42533e0e746db83e198d7a45e154, type: 3}
 --- !u!1001 &5406300250199787786
 PrefabInstance:
