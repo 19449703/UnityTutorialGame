@@ -36,11 +36,55 @@ namespace roundbeargames_tutorial
         public GameObject colliderEdgePrefab;
         public List<GameObject> bottomSpheres = new List<GameObject>();
         public List<GameObject> frontSpheres = new List<GameObject>();
+        public List<Collider> ragdollParts = new List<Collider>();
 
         public float gravityMultiplier;
         public float pullMultiplier;
 
         private void Awake()
+        {
+            SetRiagdollParts();
+            SetColliderSpheres();
+        }
+
+        //private IEnumerator Start()
+        //{
+        //    yield return new WaitForSeconds(5f);
+        //    RIGID_BODY.AddForce(300 * Vector3.up);
+        //    yield return new WaitForSeconds(0.5f);
+        //    TurnOnRagdoll();
+        //}
+        
+        private void SetRiagdollParts()
+        {
+            Collider[] colliders = this.gameObject.GetComponentsInChildren<Collider>();
+
+            foreach(Collider c in colliders)
+            {
+                if (c.gameObject != this.gameObject)
+                {
+                    c.isTrigger = true;
+                    ragdollParts.Add(c);
+                }
+            }
+        }
+
+        public void TurnOnRagdoll()
+        {
+            RIGID_BODY.useGravity = false;
+            RIGID_BODY.velocity = Vector3.zero;
+            this.gameObject.GetComponent<BoxCollider>().enabled = false;
+            animator.enabled = false;
+            animator.avatar = null;
+
+            foreach (Collider c in ragdollParts)
+            {
+                c.isTrigger = false;
+                c.attachedRigidbody.velocity = Vector3.zero;
+            }
+        }
+
+        private void SetColliderSpheres()
         {
             BoxCollider box = GetComponent<BoxCollider>();
 
@@ -99,7 +143,7 @@ namespace roundbeargames_tutorial
             return obj;
         }
 
-#if UNITY_EDITOR_OSX
+#if UNITY_EDITOR
         public Material material;
         public void ChangeMaterial()
 		{
@@ -118,6 +162,6 @@ namespace roundbeargames_tutorial
 				}
 			}
 		}
-    }
 #endif
+    }
 }
