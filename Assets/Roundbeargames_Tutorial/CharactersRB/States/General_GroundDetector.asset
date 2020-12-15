@@ -9,7 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 673a5a4233eba4f198d6a46b3dffa06e, type: 3}
-  m_Name: MoveForward
+  m_Script: {fileID: 11500000, guid: e6d2f756782714bde8623da1d84440f5, type: 3}
+  m_Name: General_GroundDetector
   m_EditorClassIdentifier: 
-  speed: 1.8
+  checkTime: 0.01
+  distance: 0.05

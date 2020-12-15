@@ -35,6 +35,10 @@ namespace roundbeargames_tutorial
 
         public GameObject colliderEdgePrefab;
         public List<GameObject> bottomSpheres = new List<GameObject>();
+        public List<GameObject> frontSpheres = new List<GameObject>();
+
+        public float gravityMultiplier;
+        public float pullMultiplier;
 
         private void Awake()
         {
@@ -49,16 +53,43 @@ namespace roundbeargames_tutorial
             GameObject bottomBack = CreateEdgeSphere(new Vector3(0, bottom, back));
             bottomFront.transform.SetParent(this.transform);
             bottomBack.transform.SetParent(this.transform);
-
             bottomSpheres.Add(bottomFront);
             bottomSpheres.Add(bottomBack);
 
-            float sec = Vector3.Distance(bottomFront.transform.localPosition, bottomBack.transform.localPosition) / 5;
-            for (int i = 0; i < 4; i++)
+            GameObject topFront = CreateEdgeSphere(new Vector3(0, top, front));
+            topFront.transform.SetParent(this.transform);
+            frontSpheres.Add(topFront);
+
+            float horSec = Vector3.Distance(bottomFront.transform.localPosition, bottomBack.transform.localPosition) / 5;
+            CreateMiddleSpheres(bottomFront, -this.transform.forward, horSec, 4, bottomSpheres);
+
+            float verSec = Vector3.Distance(bottomFront.transform.localPosition, topFront.transform.localPosition) / 10;
+            CreateMiddleSpheres(bottomFront, this.transform.up, verSec, 9, frontSpheres);
+        }
+
+        private void FixedUpdate()
+        {
+            if (RIGID_BODY.velocity.y < 0f)
             {
-                GameObject obj = CreateEdgeSphere(new Vector3(0, bottom, back + sec * (i + 1)));
+                //Debug.Log("gravity");
+                RIGID_BODY.velocity += -Vector3.up * gravityMultiplier;
+            }
+
+            if (RIGID_BODY.velocity.y > 0f && !jump)
+            {
+                //Debug.Log("pull");
+                RIGID_BODY.velocity += -Vector3.up * pullMultiplier;
+            }
+        }
+        public void CreateMiddleSpheres(GameObject start, Vector3 dir, float sec,
+            int iterations, List<GameObject> spheresList)
+        {
+            for (int i = 0; i < iterations; i++)
+            {
+                Vector3 pos = start.transform.position + dir * sec * (i + 1);
+                GameObject obj = CreateEdgeSphere(pos);
                 obj.transform.SetParent(this.transform);
-                bottomSpheres.Add(obj);
+                spheresList.Add(obj);
             }
         }
 
