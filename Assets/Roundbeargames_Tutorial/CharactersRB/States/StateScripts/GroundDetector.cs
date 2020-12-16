@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace roundbeargames_tutorial
 {
-    [CreateAssetMenu(fileName = "New State", menuName = "Roundbeargames/AbilityData/GroundDetector")]
+    [CreateAssetMenu(fileName = "New State(GroundDetector)", menuName = "Roundbeargames/AbilityData/GroundDetector")]
     public class GroundDetector : StateData
     {
         [Range(0.01f, 1f)]

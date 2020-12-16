@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace roundbeargames_tutorial
 {
-    [CreateAssetMenu(fileName = "New State", menuName = "Roundbeargames/AbilityData/Jump")]
+    [CreateAssetMenu(fileName = "New State(Jump)", menuName = "Roundbeargames/AbilityData/Jump")]
     public class Jump : StateData
     {
         public float jumpForce;

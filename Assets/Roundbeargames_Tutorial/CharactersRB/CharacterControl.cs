@@ -10,15 +10,17 @@ namespace roundbeargames_tutorial
         Jump,
         ForceTransition,
         Grounded,
+        Attack,
 	}
 
 	public class CharacterControl : MonoBehaviour
     {
-        public Animator animator;
+        public Animator skinedMeshAnimator;
 
         public bool moveLeft;
         public bool moveRight;
         public bool jump;
+        public bool attack;
 
         private Rigidbody rigid;
         public Rigidbody RIGID_BODY
@@ -37,14 +39,28 @@ namespace roundbeargames_tutorial
         public List<GameObject> bottomSpheres = new List<GameObject>();
         public List<GameObject> frontSpheres = new List<GameObject>();
         public List<Collider> ragdollParts = new List<Collider>();
+        public List<Collider> collidingParts = new List<Collider>();
 
         public float gravityMultiplier;
         public float pullMultiplier;
 
         private void Awake()
         {
+            bool switchBack = false;
+
+            if (!IsFaceingForward())
+            {
+                switchBack = true;
+            }
+
+            FaceForward(true);
             SetRiagdollParts();
             SetColliderSpheres();
+
+            if (switchBack)
+            {
+                FaceForward(false);
+            }
         }
 
         //private IEnumerator Start()
@@ -54,7 +70,33 @@ namespace roundbeargames_tutorial
         //    yield return new WaitForSeconds(0.5f);
         //    TurnOnRagdoll();
         //}
-        
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (ragdollParts.Contains(other))
+                return;
+
+            CharacterControl control = other.transform.root.GetComponent<CharacterControl>();
+            if (control == null)
+                return;
+
+            if (control.gameObject == other.gameObject)
+                return;
+
+            if (!collidingParts.Contains(other))
+            {
+                collidingParts.Add(other);
+            }
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (collidingParts.Contains(other))
+            {
+                collidingParts.Remove(other);
+            }
+        }
+
         private void SetRiagdollParts()
         {
             Collider[] colliders = this.gameObject.GetComponentsInChildren<Collider>();
@@ -74,8 +116,8 @@ namespace roundbeargames_tutorial
             RIGID_BODY.useGravity = false;
             RIGID_BODY.velocity = Vector3.zero;
             this.gameObject.GetComponent<BoxCollider>().enabled = false;
-            animator.enabled = false;
-            animator.avatar = null;
+            skinedMeshAnimator.enabled = false;
+            skinedMeshAnimator.avatar = null;
 
             foreach (Collider c in ragdollParts)
             {
@@ -141,6 +183,21 @@ namespace roundbeargames_tutorial
         {
             GameObject obj = Instantiate(colliderEdgePrefab, pos, Quaternion.identity);
             return obj;
+        }
+
+        public void MoveForward(float speed, float speedGraph)
+        {
+            this.transform.Translate(Vector3.forward * speed * speedGraph * Time.deltaTime);
+        }
+
+        public void FaceForward(bool forward)
+        {
+            this.transform.rotation = Quaternion.Euler(0, forward ? 0 : 180, 0);
+        }
+
+        public bool IsFaceingForward()
+        {
+            return this.transform.forward.z > 0;
         }
 
 #if UNITY_EDITOR

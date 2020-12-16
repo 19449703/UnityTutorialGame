@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace roundbeargames_tutorial
 {
-    [CreateAssetMenu(fileName = "New State", menuName = "Roundbeargames/AbilityData/Idle")]
+    [CreateAssetMenu(fileName = "New State(Idle)", menuName = "Roundbeargames/AbilityData/Idle")]
     public class Idle : StateData
     {
 		public override void OnEnter(CharacterState characterState, Animator animator, AnimatorStateInfo stateInfo)
@@ -15,6 +15,11 @@ namespace roundbeargames_tutorial
 		public override void UpdateAbility(CharacterState characterState, Animator animator, AnimatorStateInfo stateInfo)
         {
 			CharacterControl control = characterState.GetCharacterControl(animator);
+
+            if (control.attack)
+            {
+                animator.SetBool(TransitionParameter.Attack.ToString(), true);
+            }
 
             if (control.jump)
 			{

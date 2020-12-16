@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5330570ee957147e2b10cedd3b95102b, type: 3}
-  m_Name: Idle
+  m_Script: {fileID: 11500000, guid: d8946029c4abc426da3cc8c1216f166e, type: 3}
+  m_Name: Player_LeadJab_ForceTransition
   m_EditorClassIdentifier: 
-  duration: 0
+  transitionTiming: 0.75

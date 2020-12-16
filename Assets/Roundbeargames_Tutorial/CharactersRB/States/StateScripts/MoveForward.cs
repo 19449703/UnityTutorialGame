@@ -4,13 +4,13 @@ using UnityEngine;
 
 namespace roundbeargames_tutorial
 {
-    [CreateAssetMenu(fileName = "New State", menuName = "Roundbeargames/AbilityData/MoveForward")]
+    [CreateAssetMenu(fileName = "New State(MoveForward)", menuName = "Roundbeargames/AbilityData/MoveForward")]
     public class MoveForward : StateData
     {
         public AnimationCurve speedGraph;
         public float speed;
         public float blockDistance;
-        private bool self;
+        public bool constant;
 
         public override void OnEnter(CharacterState characterState, Animator animator, AnimatorStateInfo stateInfo)
         {
@@ -25,6 +25,30 @@ namespace roundbeargames_tutorial
                 animator.SetBool(TransitionParameter.Jump.ToString(), true);
             }
 
+            if (constant)
+            {
+                ConstentMove(control, animator, stateInfo);
+            }
+            else
+            {
+                ControlledMove(control, animator, stateInfo);
+            }
+        }
+
+        public override void OnExit(CharacterState characterState, Animator animator, AnimatorStateInfo stateInfo)
+        {
+        }
+
+        private void ConstentMove(CharacterControl control, Animator animator, AnimatorStateInfo stateInfo)
+        {
+            if (!CheckFront(control))
+            {
+                control.MoveForward(speed, speedGraph.Evaluate(stateInfo.normalizedTime));
+            }
+        }
+
+        private void ControlledMove(CharacterControl control, Animator animator, AnimatorStateInfo stateInfo)
+        {
             if (control.moveLeft && control.moveRight)
             {
                 animator.SetBool(TransitionParameter.Move.ToString(), false);
@@ -39,49 +63,56 @@ namespace roundbeargames_tutorial
 
             if (control.moveLeft)
             {
+                control.transform.rotation = Quaternion.Euler(0, 180, 0);
+
                 if (!CheckFront(control))
                 {
-                    control.transform.rotation = Quaternion.Euler(0, 180, 0);
-                    control.transform.Translate(Vector3.forward * speed * speedGraph.Evaluate(stateInfo.normalizedTime) * Time.deltaTime);
+                    control.MoveForward(speed, speedGraph.Evaluate(stateInfo.normalizedTime));
                 }
             }
             if (control.moveRight)
             {
+                control.transform.rotation = Quaternion.Euler(0, 0, 0);
+
                 if (!CheckFront(control))
                 {
-                    control.transform.rotation = Quaternion.Euler(0, 0, 0);
-                    control.transform.Translate(Vector3.forward * speed * speedGraph.Evaluate(stateInfo.normalizedTime) * Time.deltaTime);
+                    control.MoveForward(speed, speedGraph.Evaluate(stateInfo.normalizedTime));
                 }
             }
-        }
-
-        public override void OnExit(CharacterState characterState, Animator animator, AnimatorStateInfo stateInfo)
-        {
         }
             
         bool CheckFront(CharacterControl control)
         {
             foreach (var o in control.frontSpheres)
             {
-                self = false;
-
                 Debug.DrawRay(o.transform.position, control.transform.forward * 0.3f, Color.yellow);
                 RaycastHit hit;
                 if (Physics.Raycast(o.transform.position, control.transform.forward, out hit, blockDistance))
                 {
-                    foreach (Collider c in control.ragdollParts)
+                    if (!control.ragdollParts.Contains(hit.collider))
                     {
-                        if (c.gameObject == hit.collider.gameObject)
+                        if (!IsBodyPart(hit.collider))
                         {
-                            self = true;
-                            break;
+                            return true;
                         }
                     }
-
-                    if (!self)
-                        return true;
                 }
             }
+
+            return false;
+        }
+
+        bool IsBodyPart(Collider col)
+        {
+            CharacterControl control = col.transform.root.GetComponent<CharacterControl>();
+            if (control == null)
+                return false;
+
+            if (control.gameObject == col.gameObject)
+                return false;
+
+            if (control.ragdollParts.Contains(col))
+                return true;
 
             return false;
         }

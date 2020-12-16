@@ -19,6 +19,7 @@ namespace roundbeargames_tutorial
             control.moveRight = VirtualInputManager.instance.moveRight;
             control.moveLeft = VirtualInputManager.instance.moveLeft;
             control.jump = VirtualInputManager.instance.jump;
+            control.attack = VirtualInputManager.instance.attack;
         }
     }
 }

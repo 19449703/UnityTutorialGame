@@ -9,6 +9,7 @@ namespace roundbeargames_tutorial
         public bool moveLeft;
         public bool moveRight;
         public bool jump;
+        public bool attack;
     }
 
 }
