@@ -8,5 +8,4 @@ namespace roundbeargames_tutorial
     {
         public List<AttackInfo> currentAttcks = new List<AttackInfo>();
     }
-
 }
