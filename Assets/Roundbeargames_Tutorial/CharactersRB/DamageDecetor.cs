@@ -70,8 +70,9 @@ namespace roundbeargames_tutorial
             Debug.Log(info.attacker.gameObject.name + " hits：" + this.gameObject.name);
             Debug.Log(this.gameObject.name + " hit " + damagedPart.ToString());
 
-            control.skinedMeshAnimator.runtimeAnimatorController = info.attackAbility.GetDeathAnimator();
-            info.currentHits++;
+			//control.skinedMeshAnimator.runtimeAnimatorController = info.attackAbility.GetDeathAnimator();
+			control.skinedMeshAnimator.runtimeAnimatorController = DeathAnimationManager.instance.GetAnimator(damagedPart);
+			info.currentHits++;
 
             control.GetComponent<BoxCollider>().enabled = false;
             control.RIGID_BODY.useGravity = false;

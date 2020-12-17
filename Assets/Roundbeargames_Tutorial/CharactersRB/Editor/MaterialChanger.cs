@@ -15,7 +15,7 @@ namespace roundbeargames_tutorial
             CharacterControl control = (CharacterControl)target;
             if (GUILayout.Button("Change Material"))
             {
-                control.ChangeMaterial();
+                control.ChangeMaterial(); 
             }
         }
 
