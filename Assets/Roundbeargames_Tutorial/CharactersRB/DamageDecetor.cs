@@ -7,6 +7,7 @@ namespace roundbeargames_tutorial
     public class DamageDecetor : MonoBehaviour
     {
         CharacterControl control;
+        GeneralBodyPart damagedPart;
 
         private void Awake()
         {
@@ -25,7 +26,12 @@ namespace roundbeargames_tutorial
         {
             foreach(var info in AttackManager.instance.currentAttcks)
             {
-                if (info == null || !info.isRegisterd || info.isFinished)
+                if (info == null
+                    || !info.isRegisterd
+                    || info.isFinished
+                    || info.currentHits >= info.maxHits
+                    || info.attacker == control
+                    )
                 {
                     continue;
                 }
@@ -42,13 +48,17 @@ namespace roundbeargames_tutorial
 
         private bool IsCollided(AttackInfo info)
         {
-            foreach(Collider collider in control.collidingParts)
+            foreach (TriggerDetector trigger in control.GetAllTriggers())
             {
-                foreach(string name in info.colliderNames)
+                foreach (Collider collider in trigger.collidingParts)
                 {
-                    if (name == collider.gameObject.name)
+                    foreach (string name in info.colliderNames)
                     {
-                        return true;
+                        if (name == collider.gameObject.name)
+                        {
+                            damagedPart = trigger.generalBodyPart;
+                            return true;
+                        }
                     }
                 }
             }
@@ -58,6 +68,13 @@ namespace roundbeargames_tutorial
         private void TakeDamage(AttackInfo info)
         {
             Debug.Log(info.attacker.gameObject.name + " hits：" + this.gameObject.name);
+            Debug.Log(this.gameObject.name + " hit " + damagedPart.ToString());
+
+            control.skinedMeshAnimator.runtimeAnimatorController = info.attackAbility.GetDeathAnimator();
+            info.currentHits++;
+
+            control.GetComponent<BoxCollider>().enabled = false;
+            control.RIGID_BODY.useGravity = false;
         }
     }
 }

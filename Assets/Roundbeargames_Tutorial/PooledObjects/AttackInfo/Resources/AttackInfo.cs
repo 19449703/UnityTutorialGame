@@ -18,17 +18,17 @@ namespace roundbeargames_tutorial
         public bool isFinished;
         public int currentHits;
 
-        public void ResetInfo(Attack attack)
+        public void ResetInfo(Attack attack, CharacterControl control)
         {
             isRegisterd = false;
             isFinished = false;
             attackAbility = attack;
+            attacker = control;
         }
 
-        public void Register(Attack attack, CharacterControl control)
+        public void Register(Attack attack)
         {
             isRegisterd = true;
-            attacker = control;
 
             attackAbility = attack;
             colliderNames = attack.colliderNames;
@@ -37,6 +37,11 @@ namespace roundbeargames_tutorial
             lethalRange = attack.lethalRange;
             maxHits = attack.maxHits;
             currentHits = 0;
+        }
+
+        private void OnDisable()
+        {
+            isFinished = true;
         }
     }
 }

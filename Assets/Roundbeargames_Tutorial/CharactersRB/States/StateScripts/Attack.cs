@@ -16,13 +16,16 @@ namespace roundbeargames_tutorial
         public int maxHits;
         public List<RuntimeAnimatorController> deathAnimators = new List<RuntimeAnimatorController>();
 
+        private List<AttackInfo> finishedAttacks = new List<AttackInfo>();
+
         public override void OnEnter(CharacterState characterState, Animator animator, AnimatorStateInfo stateInfo)
         {
             animator.SetBool(TransitionParameter.Attack.ToString(), false);
 
-            GameObject obj = Instantiate(Resources.Load("AttackInfo", typeof(GameObject))) as GameObject;
+            GameObject obj = PoolManager.instance.GetObject(PoolObjectType.ATTACKINFO);
             AttackInfo info = obj.GetComponent<AttackInfo>();
-            info.ResetInfo(this);
+            obj.SetActive(true);
+            info.ResetInfo(this, characterState.GetCharacterControl(animator));
 
             if (!AttackManager.instance.currentAttcks.Contains(info))
             {
@@ -47,7 +50,7 @@ namespace roundbeargames_tutorial
 
                     if (!info.isRegisterd && info.attackAbility == this)
                     {
-                        info.Register(this, state.GetCharacterControl(animator));
+                        info.Register(this);
                     }
                 }
             }
@@ -67,7 +70,7 @@ namespace roundbeargames_tutorial
                     if (info.attackAbility == this && !info.isFinished)
                     {
                         info.isFinished = true;
-                        Destroy(info.gameObject);
+                        info.GetComponent<PoolObject>().TurnOff();
                     }
                 }
             }
@@ -80,10 +83,24 @@ namespace roundbeargames_tutorial
 
         public void ClearAttack()
         {
-            for (int i = 0; i < AttackManager.instance.currentAttcks.Count; i++)
+            finishedAttacks.Clear();
+
+            foreach(AttackInfo info in AttackManager.instance.currentAttcks)
             {
-                AttackManager.instance.currentAttcks.RemoveAt(i);
+                finishedAttacks.Add(info);
             }
+
+            foreach (AttackInfo info in finishedAttacks)
+            {
+                if (AttackManager.instance.currentAttcks.Contains(info))
+                    AttackManager.instance.currentAttcks.Remove(info);
+            }
+        }
+
+        public RuntimeAnimatorController GetDeathAnimator()
+        {
+            int index = Random.Range(0, deathAnimators.Count);
+            return deathAnimators[index];
         }
     }
 }

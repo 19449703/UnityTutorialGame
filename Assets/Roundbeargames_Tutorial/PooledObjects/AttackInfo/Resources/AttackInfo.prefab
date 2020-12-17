@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3106839439280518092}
   - component: {fileID: 1514582252687077167}
+  - component: {fileID: 8612728823133561259}
   m_Layer: 0
   m_Name: AttackInfo
   m_TagString: Untagged
@@ -43,3 +44,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 839273f876bfd4f75a25d31c26bd2ca7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attacker: {fileID: 0}
+  attackAbility: {fileID: 0}
+  colliderNames: []
+  mustCollider: 0
+  mustFaceAttacker: 0
+  lethalRange: 0
+  maxHits: 0
+  isRegisterd: 0
+  isFinished: 0
+  currentHits: 0
+--- !u!114 &8612728823133561259
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8471292444188696735}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38a3a8f1323bb484bb7956e033601fe0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  poolObjectType: 0
+  scheduledOffTime: 5

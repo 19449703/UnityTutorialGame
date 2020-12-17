@@ -39,7 +39,9 @@ namespace roundbeargames_tutorial
         public List<GameObject> bottomSpheres = new List<GameObject>();
         public List<GameObject> frontSpheres = new List<GameObject>();
         public List<Collider> ragdollParts = new List<Collider>();
-        public List<Collider> collidingParts = new List<Collider>();
+        //public List<Collider> collidingParts = new List<Collider>();
+
+        private List<TriggerDetector> triggerDetectors = new List<TriggerDetector>();
 
         public float gravityMultiplier;
         public float pullMultiplier;
@@ -54,13 +56,27 @@ namespace roundbeargames_tutorial
             }
 
             FaceForward(true);
-            SetRiagdollParts();
+            //SetRiagdollParts();
             SetColliderSpheres();
 
             if (switchBack)
             {
                 FaceForward(false);
             }
+        }
+
+        public List<TriggerDetector> GetAllTriggers()
+        {
+            if (triggerDetectors.Count == 0)
+            {
+                TriggerDetector[] arr = gameObject.GetComponentsInChildren<TriggerDetector>();
+                foreach(var trigger in arr)
+                {
+                    triggerDetectors.Add(trigger);
+                }
+            }
+
+            return triggerDetectors;
         }
 
         //private IEnumerator Start()
@@ -71,34 +87,10 @@ namespace roundbeargames_tutorial
         //    TurnOnRagdoll();
         //}
 
-        private void OnTriggerEnter(Collider other)
+        public void SetRiagdollParts()
         {
-            if (ragdollParts.Contains(other))
-                return;
+            ragdollParts.Clear();
 
-            CharacterControl control = other.transform.root.GetComponent<CharacterControl>();
-            if (control == null)
-                return;
-
-            if (control.gameObject == other.gameObject)
-                return;
-
-            if (!collidingParts.Contains(other))
-            {
-                collidingParts.Add(other);
-            }
-        }
-
-        private void OnTriggerExit(Collider other)
-        {
-            if (collidingParts.Contains(other))
-            {
-                collidingParts.Remove(other);
-            }
-        }
-
-        private void SetRiagdollParts()
-        {
             Collider[] colliders = this.gameObject.GetComponentsInChildren<Collider>();
 
             foreach(Collider c in colliders)
@@ -107,6 +99,9 @@ namespace roundbeargames_tutorial
                 {
                     c.isTrigger = true;
                     ragdollParts.Add(c);
+
+                    if (c.GetComponent<TriggerDetector>() == null)
+                        c.gameObject.AddComponent<TriggerDetector>();
                 }
             }
         }

@@ -10,7 +10,7 @@ namespace roundbeargames_tutorial
         {
             VirtualInputManager.instance.moveLeft = Input.GetKey(KeyCode.A);
             VirtualInputManager.instance.moveRight = Input.GetKey(KeyCode.D);
-            VirtualInputManager.instance.jump = Input.GetKeyDown(KeyCode.Space);
+            VirtualInputManager.instance.jump = Input.GetKey(KeyCode.Space);
             VirtualInputManager.instance.attack = Input.GetKeyDown(KeyCode.Return);
         }
     }
